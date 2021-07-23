@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
+      '~': resolve(__dirname, './'),
       '@': resolve(__dirname, 'src') // 设置 `@` 指向 `src` 目录
     }
   },
@@ -18,7 +19,7 @@ export default defineConfig({
     cors: true, // 允许跨域
     proxy: {    // 设置代理，根据我们项目实际情况配置
       '/api': {
-        target: 'http://apicbs.dev.guojutech.net/',
+        target: 'http://backend-api-02.newbee.ltd/manage-api/v1',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
       }

@@ -31,7 +31,7 @@
                     </el-input>
                   </el-form-item>
                   <el-form-item label="" prop="password" v-if="isPassword">
-                    <el-input  v-model="ruleForm.password" placeholder="输入密码" >
+                    <el-input  v-model="ruleForm.password" placeholder="输入密码" type="password">
                       <template #prefix>
                         <img class="icon" src="../assets/img/密 码.png">
                       </template>
@@ -75,9 +75,15 @@
 
 <script>
 import { defineComponent ,reactive, toRefs,ref} from 'vue'
+import {localSet}from '@/utils/index'
+import axios from '@/axios/axios'
+import md5 from 'md5'
+import { useRouter } from 'vue-router';
+import {  login } from '@/api/login'
 
 export default defineComponent({
   setup() {
+    const router = useRouter()
     const state = reactive({
       flag:false,
       time:60,
@@ -105,7 +111,21 @@ export default defineComponent({
     const submitForm=()=>{
       formData.value.validate((valid) => {
           if (valid) {
-            alert('submit!');
+            let params ={
+              userName: state.ruleForm.phone || '',
+              passwordMd5: md5(state.ruleForm.password)
+            }
+            login(params).then(res => {
+                localSet('token', res)
+                router.push('./account')
+              })
+            // axios.post('/adminUser/login', {
+            //     userName: state.ruleForm.phone || '',
+            //     passwordMd5: md5(state.ruleForm.password)
+            //   }).then(res => {
+            //     localSet('token', res)
+            //     router.push('./account')
+            //   })
           } else {
             return false;
           }

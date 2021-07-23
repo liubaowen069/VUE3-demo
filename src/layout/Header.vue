@@ -26,6 +26,8 @@
 <script lang="ts">
 import { defineComponent ,reactive,toRefs} from "vue";
 import { useRouter } from 'vue-router'
+import {localRemove}from '../utils/index'
+
 export default defineComponent({
   emits:['isExpand'],
   setup(props,{emit}) {
@@ -41,7 +43,8 @@ export default defineComponent({
 
       const router = useRouter();
       const signOut=()=>{
-        // router.push('/')
+        localRemove('token')
+        router.push('/')
       }
       return{
           ...toRefs(state),
